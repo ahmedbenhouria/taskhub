@@ -1,6 +1,15 @@
 # TaskManagmentApp
-Template Android app using Clean Architecture and MVVM. Includes Jetpack Compose, ViewModel, Compose Destinations Bottom Navigation, Compose Dialogs, and additional useful libraries.
+Template Android app using Clean Architecture and MVVM. Includes Jetpack Compose, ViewModel, Compose Destinations Bottom Navigation, Compose Dialogs, DatePicker, and additional useful libraries.
 
+<html>
+<head>
+<style>
+  table {
+    margin: auto;
+  }
+</style>
+</head>
+<body>
 <table>
   <tr>
      <td>Home Screen</td>
@@ -11,3 +20,5 @@ Template Android app using Clean Architecture and MVVM. Includes Jetpack Compose
     <td><img src="https://github.com/ahmedbenhouria/TaskManagmentApp/assets/76657810/1568056c-7521-47d6-8dad-5b9888968755" width=270 height=570></td>
   </tr>
  </table>
+</body>
+</html>
