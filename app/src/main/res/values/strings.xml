@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Task Management App</string>
+
+    <string name="home">Home</string>
+    <string name="tasks">Tasks</string>
+    <string name="add">Add</string>
+    <string name="message">Message</string>
+    <string name="profile">Profile</string>
+
+</resources>
