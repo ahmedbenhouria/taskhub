@@ -333,7 +333,7 @@ fun DateTimePickerSection(
                 }
             },
             setup = NumberPickerSetup(
-                min = 0, max = 30, stepSize = 1
+                min = 1, max = 25, stepSize = 1
             )
         )
     }
