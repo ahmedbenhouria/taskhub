@@ -1,6 +1,6 @@
 package com.task.management.domain
 
-import com.task.management.ui.screens.addScreen.Member
+import com.task.management.presentation.ui.screens.add.Member
 import java.time.LocalDate
 
 class ValidateTaskUseCase {

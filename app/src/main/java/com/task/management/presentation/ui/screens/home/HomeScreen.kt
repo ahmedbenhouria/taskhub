@@ -1,4 +1,4 @@
-package com.task.management.ui.screens.homeScreen
+package com.task.management.presentation.ui.screens.home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -11,11 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.task.management.ui.theme.Black
+import com.task.management.presentation.ui.theme.Black
 
 @Destination(start = true)
 @Composable
-fun Home(destinationsNavigator: DestinationsNavigator) {
+fun HomeScreen(destinationsNavigator: DestinationsNavigator) {
     Scaffold(
         containerColor = Black,
         topBar = {

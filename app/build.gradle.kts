@@ -71,23 +71,27 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
+    // Compose Destinations
     implementation ("io.github.raamcosta.compose-destinations:core:1.9.54")
     ksp ("io.github.raamcosta.compose-destinations:ksp:1.9.54")
 
+    // Feather Icons Pack
     implementation("br.com.devsrsouza.compose.icons:feather:1.1.0")
 
+    // System UI controller
     implementation ("com.google.accompanist:accompanist-systemuicontroller:0.32.0")
 
+    // Compose Calendar library
     implementation ("com.kizitonwose.calendar:compose:2.4.0")
 
-//    implementation ("io.github.vanpra.compose-material-dialogs:datetime:0.8.1-rc")
-
+    // Compose Date Picker Dialog Library
     implementation ("com.maxkeppeler.sheets-compose-dialogs:core:1.2.0")
     implementation ("com.maxkeppeler.sheets-compose-dialogs:calendar:1.2.0")
-//    implementation ("com.maxkeppeler.sheets-compose-dialogs:date-time:1.2.0")
 
+    // Compose Number Selector Dialog Library
     implementation ("com.github.MFlisar.ComposeDialogs:core:1.0.4")
     implementation ("com.github.MFlisar.ComposeDialogs:dialog-number:1.0.4")
 
+    // Custom Toast Library
     implementation ("com.github.GrenderG:Toasty:1.5.2")
 }

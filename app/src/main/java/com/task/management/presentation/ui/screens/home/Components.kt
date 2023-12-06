@@ -1,4 +1,4 @@
-package com.task.management.ui.screens.homeScreen
+package com.task.management.presentation.ui.screens.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -46,12 +46,12 @@ import androidx.compose.ui.unit.sp
 import com.kizitonwose.calendar.compose.WeekCalendar
 import com.kizitonwose.calendar.compose.weekcalendar.rememberWeekCalendarState
 import com.task.management.R
-import com.task.management.ui.theme.Black
-import com.task.management.ui.theme.Blue
-import com.task.management.ui.theme.Grey
-import com.task.management.ui.theme.GreyLight
-import com.task.management.ui.theme.White
-import com.task.management.ui.theme.priegoFont
+import com.task.management.presentation.ui.theme.Black
+import com.task.management.presentation.ui.theme.Blue
+import com.task.management.presentation.ui.theme.Grey
+import com.task.management.presentation.ui.theme.GreyLight
+import com.task.management.presentation.ui.theme.White
+import com.task.management.presentation.ui.theme.priegoFont
 import compose.icons.FeatherIcons
 import compose.icons.feathericons.Calendar
 import compose.icons.feathericons.Menu

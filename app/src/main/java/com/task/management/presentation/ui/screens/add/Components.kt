@@ -1,4 +1,4 @@
-package com.task.management.ui.screens.addScreen
+package com.task.management.presentation.ui.screens.add
 
 import android.util.Log
 import android.widget.Toast
@@ -69,13 +69,12 @@ import com.michaelflisar.composedialogs.dialogs.input.DialogNumberPicker
 import com.michaelflisar.composedialogs.dialogs.input.NumberPickerSetup
 import com.michaelflisar.composedialogs.dialogs.input.rememberDialogNumber
 import com.task.management.R
-import com.task.management.presentation.TaskViewModel
-import com.task.management.utils.MultiSelector
-import com.task.management.ui.theme.Black
-import com.task.management.ui.theme.Grey
-import com.task.management.ui.theme.GreyLight
-import com.task.management.ui.theme.White
-import com.task.management.ui.theme.priegoFont
+import com.task.management.presentation.utils.MultiSelector
+import com.task.management.presentation.ui.theme.Black
+import com.task.management.presentation.ui.theme.Grey
+import com.task.management.presentation.ui.theme.GreyLight
+import com.task.management.presentation.ui.theme.White
+import com.task.management.presentation.ui.theme.priegoFont
 import compose.icons.FeatherIcons
 import compose.icons.feathericons.Calendar
 import compose.icons.feathericons.ChevronDown
@@ -84,7 +83,6 @@ import compose.icons.feathericons.MinusCircle
 import compose.icons.feathericons.PlusCircle
 import compose.icons.feathericons.X
 import java.time.format.DateTimeFormatter
-import com.task.management.presentation.TaskFormEvent
 import es.dmoral.toasty.Toasty
 
 @Composable

@@ -1,6 +1,5 @@
-package com.task.management.presentation
+package com.task.management.presentation.ui.screens.add
 
-import com.task.management.ui.screens.addScreen.Member
 import java.time.LocalDate
 
 sealed class TaskFormEvent {

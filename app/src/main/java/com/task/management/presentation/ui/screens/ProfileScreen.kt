@@ -1,6 +1,5 @@
-package com.task.management.ui.screens
+package com.task.management.presentation.ui.screens
 
-import android.provider.ContactsContract.Profile
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,7 +13,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Destination
 @Composable
-fun Profile(destinationsNavigator: DestinationsNavigator) {
+fun ProfileScreen(destinationsNavigator: DestinationsNavigator) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,

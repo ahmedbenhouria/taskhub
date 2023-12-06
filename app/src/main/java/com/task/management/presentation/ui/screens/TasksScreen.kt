@@ -1,4 +1,4 @@
-package com.task.management.ui.screens
+package com.task.management.presentation.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,12 +13,12 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Destination
 @Composable
-fun Message(destinationsNavigator: DestinationsNavigator) {
+fun TasksScreen(destinationsNavigator: DestinationsNavigator) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxSize()
     ) {
-        Text(text = "Message", color = Color.White)
+        Text(text = "Tasks", color = Color.White)
     }
 }

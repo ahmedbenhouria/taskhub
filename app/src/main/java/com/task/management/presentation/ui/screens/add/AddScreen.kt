@@ -1,4 +1,4 @@
-package com.task.management.ui.screens.addScreen
+package com.task.management.presentation.ui.screens.add
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -27,19 +27,17 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.task.management.presentation.TaskFormEvent
-import com.task.management.presentation.TaskViewModel
-import com.task.management.ui.screens.destinations.HomeDestination
-import com.task.management.ui.theme.Black
-import com.task.management.ui.theme.White
-import com.task.management.ui.theme.priegoFont
+import com.task.management.presentation.ui.screens.destinations.HomeScreenDestination
+import com.task.management.presentation.ui.theme.Black
+import com.task.management.presentation.ui.theme.White
+import com.task.management.presentation.ui.theme.priegoFont
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Destination
 @Composable
-fun Add(
+fun AddScreen(
     destinationsNavigator: DestinationsNavigator,
     viewModel: TaskViewModel = viewModel()
 ) {
@@ -68,7 +66,7 @@ fun Add(
                 sheetState = sheetState,
                 onDismissRequest = {
                     isSheetOpen = false
-                    destinationsNavigator.navigate(HomeDestination)
+                    destinationsNavigator.navigate(HomeScreenDestination)
                 },
                 containerColor = Black,
                 modifier = Modifier.padding(top = 7.dp)
@@ -98,7 +96,7 @@ fun Add(
                                     sheetState.hide()
                                 }
                                 viewModel.resetTaskState()
-                                destinationsNavigator.navigate(HomeDestination)
+                                destinationsNavigator.navigate(HomeScreenDestination)
                             }
                         )
                         Text(

@@ -1,4 +1,4 @@
-package com.task.management
+package com.task.management.presentation.ui.bottomNav
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.core.tween
@@ -33,15 +33,15 @@ import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.animations.defaults.RootNavGraphDefaultAnimations
 import com.ramcosta.composedestinations.navigation.navigate
 import com.ramcosta.composedestinations.rememberNavHostEngine
-import com.task.management.ui.bottomNavEntries.BottomBarDestination
-import com.task.management.ui.screens.NavGraphs
-import com.task.management.ui.theme.Black
-import com.task.management.ui.theme.White
+import com.task.management.R
+import com.task.management.presentation.ui.screens.NavGraphs
+import com.task.management.presentation.ui.theme.Black
+import com.task.management.presentation.ui.theme.White
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun ParentBottomNav() {
+fun Parent() {
     val navController = rememberNavController()
     val systemUiController = rememberSystemUiController()
 

@@ -1,4 +1,4 @@
-package com.task.management.utils
+package com.task.management.presentation.utils
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -30,9 +30,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.task.management.ui.theme.Blue
-import com.task.management.ui.theme.Grey
-import com.task.management.ui.theme.priegoFont
+import com.task.management.presentation.ui.theme.Blue
+import com.task.management.presentation.ui.theme.Grey
+import com.task.management.presentation.ui.theme.priegoFont
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue

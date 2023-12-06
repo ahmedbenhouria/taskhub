@@ -1,7 +1,7 @@
-package com.task.management.presentation
+package com.task.management.presentation.ui.screens.add
 
 import androidx.compose.runtime.mutableStateListOf
-import com.task.management.ui.screens.addScreen.Member
+import com.task.management.presentation.ui.screens.add.Member
 import java.time.LocalDate
 
 data class TaskFormState(
