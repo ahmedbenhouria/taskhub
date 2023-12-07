@@ -10,8 +10,11 @@ import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
 import com.task.management.presentation.ui.bottomNav.Parent
 import com.task.management.presentation.ui.theme.TaskManagementAppTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)

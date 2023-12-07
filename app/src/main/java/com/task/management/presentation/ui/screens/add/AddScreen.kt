@@ -39,7 +39,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun AddScreen(
     destinationsNavigator: DestinationsNavigator,
-    viewModel: TaskViewModel = viewModel()
+    viewModel: AddTaskViewModel = viewModel()
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -119,7 +119,7 @@ fun AddScreen(
                         )
                     }
 
-                    CreateTaskContent(viewModel)
+                    CreateTaskContent()
                 }
             }
         }

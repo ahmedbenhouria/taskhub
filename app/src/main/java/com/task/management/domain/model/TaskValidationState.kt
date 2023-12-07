@@ -1,4 +1,4 @@
-package com.task.management.domain
+package com.task.management.domain.model
 
 
 data class TaskValidationState (

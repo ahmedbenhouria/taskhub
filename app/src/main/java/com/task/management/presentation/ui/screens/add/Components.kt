@@ -2,7 +2,6 @@ package com.task.management.presentation.ui.screens.add
 
 import android.util.Log
 import android.widget.Toast
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -37,6 +36,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -57,6 +57,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.calendar.CalendarDialog
 import com.maxkeppeler.sheets.calendar.models.CalendarConfig
@@ -69,6 +71,8 @@ import com.michaelflisar.composedialogs.dialogs.input.DialogNumberPicker
 import com.michaelflisar.composedialogs.dialogs.input.NumberPickerSetup
 import com.michaelflisar.composedialogs.dialogs.input.rememberDialogNumber
 import com.task.management.R
+import com.task.management.data.local.Task
+import com.task.management.data.TaskViewModel
 import com.task.management.presentation.utils.MultiSelector
 import com.task.management.presentation.ui.theme.Black
 import com.task.management.presentation.ui.theme.Grey
@@ -87,14 +91,17 @@ import es.dmoral.toasty.Toasty
 
 @Composable
 fun CreateTaskContent(
-    viewModel: TaskViewModel
+    addTaskViewModel: AddTaskViewModel = viewModel(),
+    taskViewModel: TaskViewModel = hiltViewModel()
 ) {
+    val state by addTaskViewModel.taskState.collectAsState()
+
     val context = LocalContext.current
 
     LaunchedEffect(key1 = context) {
-        viewModel.validationEvents.collect { event ->
+        addTaskViewModel.validationEvents.collect { event ->
             when (event) {
-                is TaskViewModel.ValidationEvent.Success -> {
+                is AddTaskViewModel.ValidationEvent.Success -> {
                     Toasty.success(
                         context,
                         "Task is created successfully.",
@@ -102,12 +109,20 @@ fun CreateTaskContent(
                         true
                     ).show()
 
-                    val listMembers = viewModel.taskState.selectedMembers.toMutableList()
-                    Log.d("TASK:", listMembers.toString())
+                    val task = Task(
+                        title = state.title,
+                        description = state.description,
+                        dueDate = state.dueDate,
+                        estimateTime = state.estimateTask,
+                        priority = state.selectedPriority,
+                        members = state.selectedMembers.toList()
+                    )
 
+                    taskViewModel.upsertTask(task)
                 }
-                is TaskViewModel.ValidationEvent.Error -> {
+                is AddTaskViewModel.ValidationEvent.Error -> {
                     val validationState = event.validationState
+
                     val errorMessage: String = when {
                         !validationState.isValidTitle && !validationState.isValidDescription && !validationState.isMemberSelected ->
                             "Fill in the task information correctly."
@@ -121,6 +136,7 @@ fun CreateTaskContent(
                         !validationState.isMemberSelected -> "Select at least one member."
                         else -> "Fill in the task information correctly."
                     }
+
                     Toasty.error(
                         context,
                         errorMessage,
@@ -140,37 +156,28 @@ fun CreateTaskContent(
             .padding(vertical = 38.dp)
             .verticalScroll(rememberScrollState())
     ) {
-        val state = viewModel.taskState
-
-        val color by animateColorAsState(
-            targetValue = Grey,
-            label = "color"
-        )
-
         CustomTextField(
             modifier = Modifier.height(48.dp),
             label = "Title",
             value = state.title,
-            onValueChanged = { viewModel.onEvent(TaskFormEvent.TitleChanged(it)) },
-            hint = "Enter task title",
-            colorState = color
+            onValueChanged = { addTaskViewModel.onEvent(TaskFormEvent.TitleChanged(it)) },
+            hint = "Enter task title"
         )
 
         CustomTextField(
             modifier = Modifier.height(150.dp),
             label = "Description",
             value = state.description,
-            onValueChanged = { viewModel.onEvent(TaskFormEvent.DescriptionChanged(it)) },
+            onValueChanged = { addTaskViewModel.onEvent(TaskFormEvent.DescriptionChanged(it)) },
             hint = "Enter task description",
-            colorState = color,
             maxLines = 5
         )
 
-        DateTimePickerSection(viewModel)
+        DateTimePickerSection(state, addTaskViewModel::onEvent)
 
-        PrioritySelectorSection(viewModel)
+        PrioritySelectorSection(state, addTaskViewModel::onEvent)
 
-        DropDownMenuMembersSection(viewModel)
+        DropDownMenuMembersSection(state, addTaskViewModel::onEvent)
     }
 }
 
@@ -181,7 +188,6 @@ fun CustomTextField(
     value: String,
     onValueChanged: (String) -> Unit,
     hint: String,
-    colorState: Color,
     maxLines: Int = 1
 ) {
     val localFocusManager = LocalFocusManager.current
@@ -203,7 +209,7 @@ fun CustomTextField(
         )
 
         BasicTextField(modifier = Modifier
-            .background(colorState, RoundedCornerShape(12.dp))
+            .background(Grey, RoundedCornerShape(12.dp))
             .padding(3.dp)
             .fillMaxWidth()
             .then(modifier),
@@ -252,10 +258,9 @@ fun CustomTextField(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DateTimePickerSection(
-    viewModel: TaskViewModel
+    state: TaskFormState,
+    onEvent: (TaskFormEvent) -> Unit
 ) {
-    val state = viewModel.taskState
-
     val calendarState = rememberUseCaseState()
 
     CalendarDialog(
@@ -266,7 +271,7 @@ fun DateTimePickerSection(
             style = CalendarStyle.MONTH
         ),
         selection = CalendarSelection.Date { date ->
-            viewModel.onEvent(TaskFormEvent.DueDateChanged(date))
+            onEvent(TaskFormEvent.DueDateChanged(date))
         }
     )
 
@@ -327,7 +332,7 @@ fun DateTimePickerSection(
             },
             onEvent = {
                 if (it is DialogEvent.Button && it.button == DialogButtonType.Positive) {
-                    viewModel.onEvent(TaskFormEvent.EstimateTaskChanged(value.value))
+                    onEvent(TaskFormEvent.EstimateTaskChanged(value.value))
                 }
             },
             setup = NumberPickerSetup(
@@ -456,10 +461,9 @@ fun DateTimePickerSection(
 
 @Composable
 fun PrioritySelectorSection(
-    viewModel: TaskViewModel
+    state: TaskFormState,
+    onEvent: (TaskFormEvent) -> Unit
 ) {
-    val state = viewModel.taskState
-
     val priorityOptions = listOf("Low", "Medium", "High")
 
     Column(
@@ -483,7 +487,7 @@ fun PrioritySelectorSection(
             options = priorityOptions,
             selectedOption = state.selectedPriority,
             onOptionSelect = { option ->
-                viewModel.onEvent(TaskFormEvent.PriorityChanged(option))
+                onEvent(TaskFormEvent.PriorityChanged(option))
             },
             selectedColor = Black,
             unselectedColor = White,
@@ -499,10 +503,9 @@ data class Member(val name: String, val image: Int)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun DropDownMenuMembersSection(
-    viewModel: TaskViewModel
+    state: TaskFormState,
+    onEvent: (TaskFormEvent) -> Unit
 ) {
-    val state = viewModel.taskState
-
     val members = listOf(
         Member(name = "Dianne Russell", image = R.drawable.member1),
         Member(name = "Floyd Wilson", image = R.drawable.profile_photo),
@@ -598,7 +601,7 @@ fun DropDownMenuMembersSection(
                             },
                             onClick = {
                                 if (member !in state.selectedMembers) {
-                                    viewModel.onEvent(TaskFormEvent.MemberAdded(member))
+                                    onEvent(TaskFormEvent.MemberAdded(member))
                                 }
                                 expanded = false
                             },
@@ -620,7 +623,7 @@ fun DropDownMenuMembersSection(
                         modifier = Modifier.animateItemPlacement(),
                         member = member,
                         onClick = {
-                            viewModel.onEvent(TaskFormEvent.MemberRemoved(member))
+                            onEvent(TaskFormEvent.MemberRemoved(member))
                         }
                     )
                 }

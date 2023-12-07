@@ -1,5 +1,6 @@
-package com.task.management.domain
+package com.task.management.domain.usecase
 
+import com.task.management.domain.model.TaskValidationState
 import com.task.management.presentation.ui.screens.add.Member
 import java.time.LocalDate
 
