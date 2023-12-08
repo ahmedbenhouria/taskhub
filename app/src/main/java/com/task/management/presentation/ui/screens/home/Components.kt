@@ -1,5 +1,6 @@
 package com.task.management.presentation.ui.screens.home
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -43,9 +44,13 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kizitonwose.calendar.compose.WeekCalendar
 import com.kizitonwose.calendar.compose.weekcalendar.rememberWeekCalendarState
 import com.task.management.R
+import com.task.management.data.TaskViewModel
+import com.task.management.data.local.Task
 import com.task.management.presentation.ui.theme.Black
 import com.task.management.presentation.ui.theme.Blue
 import com.task.management.presentation.ui.theme.Grey
@@ -58,6 +63,7 @@ import compose.icons.feathericons.Menu
 import compose.icons.feathericons.MessageCircle
 import compose.icons.feathericons.Paperclip
 import compose.icons.feathericons.Share2
+import kotlinx.coroutines.delay
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -136,7 +142,11 @@ fun InlineTitleIconComponent() {
 }
 
 @Composable
-fun WeekCalenderSection() {
+fun WeekCalenderSection(
+    viewModel: TaskViewModel = hiltViewModel()
+) {
+    val ListTasks by viewModel.getAllTasks.collectAsStateWithLifecycle()
+
     val currentDate = remember { LocalDate.now() }
     val startDate = remember { currentDate.minusDays(20) }
     val endDate = remember { currentDate.plusDays(20) }
@@ -146,12 +156,6 @@ fun WeekCalenderSection() {
         startDate = startDate,
         endDate = endDate,
         firstVisibleWeekDate = currentDate,
-    )
-
-    val tasksList = listOf(
-        Task(name = "March Dribble Shots Design.\nPlan for the month", priority = "High", date = currentDate),
-        Task(name = "Create the 'Blog' and 'Product'\npages for the FortRoom website", priority = "Medium", date = currentDate),
-        Task(name = "Create the 'Blog' and 'Product'\npages for the FortRoom website", priority = "Medium", date = currentDate.plusDays(1))
     )
 
     Column {
@@ -169,7 +173,7 @@ fun WeekCalenderSection() {
             },
         )
 
-        TasksListSection(tasksList, selection)
+        TasksListSection(ListTasks, selection)
     }
 
 }
@@ -229,9 +233,10 @@ fun Day(
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun TasksListSection(
-    tasksList: List<Task>,
+    listTasks: List<Task>,
     selection: LocalDate
 ) {
     LazyColumn(
@@ -242,26 +247,20 @@ fun TasksListSection(
             .padding(vertical = 4.dp),
         contentPadding = PaddingValues(bottom = 80.dp)
     ) {
-        items(tasksList.filter { it.priority == "High" }) {task ->
-            if (selection == task.date) {
-                CardTask(task = task)
-            }
+        items(listTasks.filter { it.priority == "High" && it.dueDate == selection }) {task ->
+            CardTask(task = task)
         }
-        items(tasksList.filter { it.priority == "Medium" }) {task ->
-            if (selection == task.date) {
-                CardTask(
-                    task = task,
-                    containerColor = Grey,
-                    primaryColor = White,
-                    secondaryColor = White,
-                    backgroundColor = GreyLight
-                )
-            }
+        items(listTasks.filter { it.priority == "Medium" && it.dueDate == selection }) {task ->
+            CardTask(
+                task = task,
+                containerColor = Grey,
+                primaryColor = White,
+                secondaryColor = White,
+                backgroundColor = GreyLight
+            )
         }
     }
 }
-
-data class Task(val name: String, val priority: String, val date: LocalDate)
 
 @Composable
 fun CardTask(
@@ -329,7 +328,7 @@ fun CardTask(
             }
 
             Text(
-                text = task.name,
+                text = task.title,
                 fontSize = 19.sp,
                 color =  primaryColor,
                 fontFamily = priegoFont,
@@ -349,7 +348,7 @@ fun CardTask(
                 )
 
                 Text(
-                    text = DateTimeFormatter.ofPattern("dd MMM").format(task.date),
+                    text = DateTimeFormatter.ofPattern("dd MMM").format(task.dueDate),
                     fontSize = 13.sp,
                     color =  primaryColor,
                     fontFamily = priegoFont,

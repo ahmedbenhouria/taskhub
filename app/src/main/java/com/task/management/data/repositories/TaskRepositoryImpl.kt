@@ -9,10 +9,14 @@ import javax.inject.Inject
 
 class TaskRepositoryImpl @Inject constructor(private val taskDao: TaskDao): TaskRepository {
 
-    override suspend fun upsertTask(task: Task) {
+    override suspend fun insertTask(task: Task) {
         withContext(Dispatchers.IO) {
-            taskDao.upsertTask(task)
+            taskDao.insertTask(task)
         }
+    }
+
+    override suspend fun getTasksByPriority(): List<Task> {
+        return taskDao.getTasksByPriority()
     }
 
 }

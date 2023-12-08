@@ -76,6 +76,12 @@ dependencies {
     implementation ("io.github.raamcosta.compose-destinations:core:1.9.54")
     ksp ("io.github.raamcosta.compose-destinations:ksp:1.9.54")
 
+    // Compose Lifecycles
+    val lifecycleVersion = "2.6.2"
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifecycleVersion")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycleVersion")
+
     // Feather Icons Pack
     implementation("br.com.devsrsouza.compose.icons:feather:1.1.0")
 
@@ -97,15 +103,17 @@ dependencies {
     implementation ("com.github.GrenderG:Toasty:1.5.2")
 
     // Dagger Hilt
-    implementation ("com.google.dagger:hilt-android:2.48.1")
-    ksp ("com.google.dagger:hilt-android-compiler:2.48.1")
+    val daggerHiltVersion = "2.48.1"
+    implementation ("com.google.dagger:hilt-android:$daggerHiltVersion")
+    ksp ("com.google.dagger:hilt-android-compiler:$daggerHiltVersion")
     implementation ("androidx.hilt:hilt-navigation-compose:1.1.0")
 
     // Room components
-    implementation ("androidx.room:room-runtime:2.6.0")
-    ksp ("androidx.room:room-compiler:2.6.0")
-    implementation ("androidx.room:room-ktx:2.6.0")
-    androidTestImplementation ("androidx.room:room-testing:2.6.0")
+    val roomVersion = "2.6.0"
+    implementation ("androidx.room:room-runtime:$roomVersion")
+    ksp ("androidx.room:room-compiler:$roomVersion")
+    implementation ("androidx.room:room-ktx:$roomVersion")
+    androidTestImplementation ("androidx.room:room-testing:$roomVersion")
 
     // GSON
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")

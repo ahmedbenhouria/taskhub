@@ -16,7 +16,6 @@ class AddTaskViewModel(
 ): ViewModel() {
 
     private var _taskState = MutableStateFlow(TaskFormState())
-
     val taskState = _taskState.asStateFlow()
 
     private val validationEventChannel = Channel<ValidationEvent>()
@@ -60,11 +59,28 @@ class AddTaskViewModel(
         )
 
         viewModelScope.launch {
-            validationEventChannel.send(
-                if (validationState.isSuccessful)
-                    ValidationEvent.Success
-                else
-                    ValidationEvent.Error(validationState))
+            if (validationState.isSuccessful) {
+                validationEventChannel.send(ValidationEvent.Success)
+            } else {
+                val errorMessage = getErrorMessage(validationState)
+                validationEventChannel.send(ValidationEvent.Error(errorMessage))
+            }
+        }
+    }
+
+    private fun getErrorMessage(validationState: TaskValidationState): String {
+        return when {
+            !validationState.isValidTitle && !validationState.isValidDescription && !validationState.isMemberSelected ->
+                "Fill in the task information correctly."
+            !validationState.isValidTitle && !validationState.isValidDescription ->
+                "Enter a valid title and description."
+            !validationState.isValidTitle && !validationState.isMemberSelected ->
+                "Enter a valid title and select at least one member."
+            !validationState.isValidTitle -> "Enter a valid title."
+            !validationState.isValidDescription -> "Enter a valid description."
+            !validationState.isValidDueDate -> "Choose a due date for today or a future date."
+            !validationState.isMemberSelected -> "Select at least one member."
+            else -> "Fill in the task information correctly."
         }
     }
 
@@ -74,6 +90,6 @@ class AddTaskViewModel(
 
     sealed class ValidationEvent {
         data object Success: ValidationEvent()
-        data class Error(val validationState: TaskValidationState): ValidationEvent()
+        data class Error(val errorMessage: String): ValidationEvent()
     }
 }

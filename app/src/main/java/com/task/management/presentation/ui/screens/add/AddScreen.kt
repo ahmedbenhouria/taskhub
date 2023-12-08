@@ -94,8 +94,8 @@ fun AddScreen(
                             modifier = Modifier.clickable {
                                 scope.launch {
                                     sheetState.hide()
+                                    viewModel.resetTaskState()
                                 }
-                                viewModel.resetTaskState()
                                 destinationsNavigator.navigate(HomeScreenDestination)
                             }
                         )
@@ -119,7 +119,15 @@ fun AddScreen(
                         )
                     }
 
-                    CreateTaskContent()
+                    CreateTaskContent(onHideSheet = {
+                        if (it) {
+                            scope.launch {
+                                sheetState.hide()
+                                viewModel.resetTaskState()
+                            }
+                            destinationsNavigator.navigate(HomeScreenDestination)
+                        }
+                    })
                 }
             }
         }

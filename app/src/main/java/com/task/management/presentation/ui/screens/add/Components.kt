@@ -1,6 +1,5 @@
 package com.task.management.presentation.ui.screens.add
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -36,7 +35,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -58,6 +56,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.calendar.CalendarDialog
@@ -91,10 +90,11 @@ import es.dmoral.toasty.Toasty
 
 @Composable
 fun CreateTaskContent(
+    onHideSheet: (Boolean) -> Unit,
     addTaskViewModel: AddTaskViewModel = viewModel(),
     taskViewModel: TaskViewModel = hiltViewModel()
 ) {
-    val state by addTaskViewModel.taskState.collectAsState()
+    val state by addTaskViewModel.taskState.collectAsStateWithLifecycle()
 
     val context = LocalContext.current
 
@@ -118,24 +118,12 @@ fun CreateTaskContent(
                         members = state.selectedMembers.toList()
                     )
 
-                    taskViewModel.upsertTask(task)
+                    taskViewModel.insertTask(task)
+                    onHideSheet(true)
+
                 }
                 is AddTaskViewModel.ValidationEvent.Error -> {
-                    val validationState = event.validationState
-
-                    val errorMessage: String = when {
-                        !validationState.isValidTitle && !validationState.isValidDescription && !validationState.isMemberSelected ->
-                            "Fill in the task information correctly."
-                        !validationState.isValidTitle && !validationState.isValidDescription ->
-                            "Enter a valid title and description."
-                        !validationState.isValidTitle && !validationState.isMemberSelected ->
-                            "Enter a valid title and select at least one member."
-                        !validationState.isValidTitle -> "Enter a valid title."
-                        !validationState.isValidDescription -> "Enter a valid description."
-                        !validationState.isValidDueDate -> "Choose a due date for today or a future date."
-                        !validationState.isMemberSelected -> "Select at least one member."
-                        else -> "Fill in the task information correctly."
-                    }
+                    val errorMessage = event.errorMessage
 
                     Toasty.error(
                         context,
