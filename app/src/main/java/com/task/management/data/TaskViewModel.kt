@@ -20,7 +20,7 @@ class TaskViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            _getAllTasks.emit(repository.getTasksByPriority())
+            _getAllTasks.emit(repository.getAllTasks())
         }
     }
 

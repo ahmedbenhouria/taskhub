@@ -15,8 +15,8 @@ class TaskRepositoryImpl @Inject constructor(private val taskDao: TaskDao): Task
         }
     }
 
-    override suspend fun getTasksByPriority(): List<Task> {
-        return taskDao.getTasksByPriority()
+    override suspend fun getAllTasks(): List<Task> {
+        return taskDao.getAllTasks()
     }
 
 }

@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
     id ("dagger.hilt.android.plugin")
+    id ("kotlin-parcelize")
 }
 
 android {
@@ -118,4 +119,9 @@ dependencies {
     // GSON
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation ("com.google.code.gson:gson:2.9.1")
+
+    implementation ("com.github.SimformSolutionsPvtLtd:SSJetpackComposeSwipeableView:1.0.1")
+
+    implementation ("androidx.datastore:datastore-preferences:1.0.0")
+
 }

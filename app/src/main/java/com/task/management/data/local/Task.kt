@@ -1,10 +1,14 @@
 package com.task.management.data.local
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.task.management.presentation.ui.screens.add.Member
+import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 import java.time.LocalDate
 
+@Parcelize
 @Entity (tableName = "Task")
 data class Task(
     @PrimaryKey (autoGenerate = true)
@@ -14,5 +18,5 @@ data class Task(
     val dueDate: LocalDate,
     val estimateTime: Int,
     val priority: String,
-    val members: List<Member>
-)
+    val members: @RawValue List<Member>
+): Parcelable

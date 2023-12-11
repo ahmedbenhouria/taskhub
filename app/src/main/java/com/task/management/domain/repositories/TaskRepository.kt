@@ -6,6 +6,6 @@ import com.task.management.data.local.Task
 interface TaskRepository {
     suspend fun insertTask(task: Task)
 
-    suspend fun getTasksByPriority(): List<Task>
+    suspend fun getAllTasks(): List<Task>
 
 }

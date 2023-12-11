@@ -1,9 +1,12 @@
 package com.task.management.presentation.ui.bottomNav
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.height
@@ -18,6 +21,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -80,31 +86,56 @@ fun BottomBar(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    NavigationBar(
-        containerColor = Black,
-        contentColor = Black,
-        modifier = Modifier.height(100.dp)
-    ) {
-        BottomBarDestination.values().forEach { destination ->
-            AddItem(
-                destination = destination,
-                currentDestination = currentDestination,
-            ) {
-                navController.navigate(destination.direction) {
-                    launchSingleTop = true
-                    val firstBottomBarDestination = navController.graph.findStartDestination()
+    var bottomBarState by rememberSaveable { (mutableStateOf(true)) }
 
-                    popUpTo(firstBottomBarDestination.id) {
-                        inclusive = true
-                        saveState = true
+    when (navBackStackEntry?.destination?.route) {
+        "home_screen" -> {
+            bottomBarState = true
+        }
+        "message_screen" -> {
+            bottomBarState = true
+        }
+        "profile_screen" -> {
+            bottomBarState = true
+        }
+        "tasks_screen" -> {
+            bottomBarState = true
+        }
+        else -> {
+            bottomBarState = false
+        }
+    }
+
+    AnimatedVisibility(
+        visible = bottomBarState,
+        enter = slideInVertically(initialOffsetY = { it }),
+        exit = slideOutVertically(targetOffsetY = { it }),
+    ) {
+        NavigationBar(
+            containerColor = Black,
+            contentColor = Black,
+            modifier = Modifier.height(100.dp)
+        ) {
+            BottomBarDestination.entries.forEach { destination ->
+                AddItem(
+                    destination = destination,
+                    currentDestination = currentDestination,
+                ) {
+                    navController.navigate(destination.direction) {
+                        launchSingleTop = true
+                        val firstBottomBarDestination = navController.graph.findStartDestination()
+
+                        popUpTo(firstBottomBarDestination.id) {
+                            inclusive = true
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
                     }
-                    launchSingleTop = true
-                    restoreState = true
                 }
             }
         }
     }
-
 }
 
 @Composable

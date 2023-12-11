@@ -12,7 +12,6 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,7 +30,6 @@ import com.task.management.presentation.ui.screens.destinations.HomeScreenDestin
 import com.task.management.presentation.ui.theme.Black
 import com.task.management.presentation.ui.theme.White
 import com.task.management.presentation.ui.theme.priegoFont
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -51,13 +49,8 @@ fun AddScreen(
         )
 
         var isSheetOpen by remember {
-            mutableStateOf(false)
+            mutableStateOf(true)
         }
-
-        LaunchedEffect(key1 = Unit, block = {
-            delay(80L)
-            isSheetOpen = true
-        })
 
         val scope = rememberCoroutineScope()
 

@@ -1,57 +1,52 @@
-package com.task.management.presentation.ui.screens.home
+package com.task.management.presentation.ui.screens.details
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.task.management.data.local.Task
 import com.task.management.presentation.ui.theme.Black
+import com.task.management.presentation.ui.theme.Blue
 
-@Destination(start = true)
+@Destination
 @Composable
-fun HomeScreen(destinationsNavigator: DestinationsNavigator) {
+fun DetailsScreen(
+    destinationsNavigator: DestinationsNavigator,
+    task: Task
+) {
     val systemUiController = rememberSystemUiController()
 
     SideEffect {
         systemUiController.setSystemBarsColor(
             Color.Transparent,
+            darkIcons = true
+        )
+        systemUiController.setNavigationBarColor(
+            Black,
             darkIcons = false
         )
     }
 
     Scaffold(
-        containerColor = Black,
+        containerColor = Blue,
         topBar = {
-            TopBarComponent()
+            TopBarComponent(destinationsNavigator, task)
         }
     ) { paddingValues ->
-        Content(paddingValues, destinationsNavigator)
+        DetailsContent(paddingValues)
     }
-}
-
-@Composable
-fun Content(
-    paddingValues: PaddingValues,
-    destinationsNavigator: DestinationsNavigator
-) {
     Column(
-        horizontalAlignment = Alignment.Start,
-        modifier = Modifier
-            .padding(paddingValues)
-            .fillMaxSize()
-            .padding(top = 5.dp)
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        InlineTitleIconComponent()
-        WeekCalenderSection(destinationsNavigator)
+
     }
 }
 

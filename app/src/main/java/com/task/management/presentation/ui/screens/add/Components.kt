@@ -1,5 +1,6 @@
 package com.task.management.presentation.ui.screens.add
 
+import android.os.Parcelable
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -87,6 +88,7 @@ import compose.icons.feathericons.PlusCircle
 import compose.icons.feathericons.X
 import java.time.format.DateTimeFormatter
 import es.dmoral.toasty.Toasty
+import kotlinx.parcelize.Parcelize
 
 @Composable
 fun CreateTaskContent(
@@ -486,7 +488,8 @@ fun PrioritySelectorSection(
     }
 }
 
-data class Member(val name: String, val image: Int)
+@Parcelize
+data class Member(val name: String, val image: Int): Parcelable
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
