@@ -3,7 +3,6 @@ package com.task.management.presentation.ui.screens.details
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.Interaction
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -20,6 +19,8 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -38,6 +39,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -52,7 +54,6 @@ import com.task.management.presentation.ui.theme.Grey
 import com.task.management.presentation.ui.theme.White
 import com.task.management.presentation.ui.theme.priegoFont
 import compose.icons.FeatherIcons
-import compose.icons.feathericons.Calendar
 import compose.icons.feathericons.ChevronLeft
 import compose.icons.feathericons.Edit3
 import compose.icons.feathericons.Share2
@@ -88,33 +89,28 @@ fun TopBarComponent(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(21.dp),
+                .padding(vertical = 15.dp, horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Icon(
+            ClickableButton(
+                modifier = Modifier.size(28.dp),
                 imageVector = FeatherIcons.ChevronLeft,
-                contentDescription = null,
-                tint = Grey,
-                modifier = Modifier.size(26.dp).clickable {
-                    destinationsNavigator.popBackStack()
-                }
-            )
+            ) {
+                destinationsNavigator.popBackStack()
+            }
 
             Row(
-                horizontalArrangement = Arrangement.spacedBy(15.dp)
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Icon(
+                ClickableButton(
+                    modifier = Modifier.size(22.dp),
                     imageVector = FeatherIcons.Share2,
-                    contentDescription = null,
-                    tint = Grey,
-                    modifier = Modifier.size(22.dp)
                 )
-                Icon(
+
+                ClickableButton(
+                    modifier = Modifier.size(23.dp),
                     imageVector = FeatherIcons.Edit3,
-                    contentDescription = null,
-                    tint = Grey,
-                    modifier = Modifier.size(22.dp)
                 )
             }
         }
@@ -150,7 +146,7 @@ fun TopBarComponent(
                     )
 
                     Column(
-                        verticalArrangement = Arrangement.spacedBy(2.dp)
+                        verticalArrangement = Arrangement.spacedBy(3.dp)
                     ) {
                         Text(
                             text = "Assigned to",
@@ -192,15 +188,15 @@ fun TopBarComponent(
                             )
                         }
                         Icon(
-                            imageVector = FeatherIcons.Calendar,
+                            painter = painterResource(id = R.drawable.calendar_icon),
                             contentDescription = null,
                             tint = Black,
-                            modifier = Modifier.size(17.dp)
+                            modifier = Modifier.size(16.dp)
                         )
                     }
 
                     Column(
-                        verticalArrangement = Arrangement.spacedBy(2.dp)
+                        verticalArrangement = Arrangement.spacedBy(3.dp)
                     ) {
                         Text(
                             text = "Due Date",
@@ -253,9 +249,9 @@ fun TabRows() {
             divider = {
                 Box(
                     modifier = Modifier
-                    .height(2.dp)
-                    .alpha(0.25f)
-                    .background(color = White)
+                        .height(2.dp)
+                        .alpha(0.25f)
+                        .background(color = White)
                 )
             }
         ) {
@@ -285,5 +281,30 @@ fun TabRows() {
                 )
             }
         }
+    }
+}
+
+@Composable
+fun ClickableButton(
+    modifier: Modifier = Modifier,
+    imageVector: ImageVector,
+    color: Color = Grey,
+    onClick: () -> Unit = {}
+) {
+    Button(
+        onClick = onClick,
+        contentPadding = PaddingValues(),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Blue,
+            contentColor = color
+        ),
+        modifier =  Modifier
+            .width(38.dp)
+            .height(38.dp)
+    ) {
+        Icon(
+            imageVector = imageVector,
+            contentDescription = null,
+            modifier = modifier)
     }
 }

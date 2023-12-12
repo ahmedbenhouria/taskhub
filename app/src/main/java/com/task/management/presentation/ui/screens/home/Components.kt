@@ -1,5 +1,6 @@
 package com.task.management.presentation.ui.screens.home
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -41,6 +43,7 @@ import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -60,7 +63,6 @@ import com.task.management.presentation.ui.theme.GreyLight
 import com.task.management.presentation.ui.theme.White
 import com.task.management.presentation.ui.theme.priegoFont
 import compose.icons.FeatherIcons
-import compose.icons.feathericons.Calendar
 import compose.icons.feathericons.Menu
 import compose.icons.feathericons.MessageCircle
 import compose.icons.feathericons.Paperclip
@@ -145,15 +147,15 @@ fun InlineTitleIconComponent() {
 @Composable
 fun WeekCalenderSection(
     destinationsNavigator: DestinationsNavigator,
-    viewModel: TaskViewModel = hiltViewModel(),
+    taskViewModel: TaskViewModel = hiltViewModel(),
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
-    val listTasks by viewModel.getAllTasks.collectAsStateWithLifecycle()
+    val listTasks by taskViewModel.getAllTasks.collectAsStateWithLifecycle()
     val selectedDate = homeViewModel.selectedDate.collectAsStateWithLifecycle()
 
     val currentDate = remember { selectedDate.value }
-    val startDate = remember { currentDate.minusDays(20) }
-    val endDate = remember { currentDate.plusDays(20) }
+    val startDate = remember { currentDate.minusDays(30) }
+    val endDate = remember { currentDate.plusDays(30) }
 
     var selection by remember { mutableStateOf(currentDate) }
     val firstDayOfWeek = remember { firstDayOfWeekFromLocale() }
@@ -181,8 +183,54 @@ fun WeekCalenderSection(
             }
         )
 
-        if (listTasks.isNotEmpty()) {
-            TasksListSection(listTasks, selection, destinationsNavigator)
+        val listState = listTasks.any { it.dueDate == selection }
+
+        AnimatedContent(
+            targetState = listState,
+            label = "",
+        ) { targetState ->
+            when (targetState) {
+                true -> {
+                    TasksListSection(listTasks, selection, destinationsNavigator)
+                }
+                else -> {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(340.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.nothing),
+                            contentDescription = null,
+                            modifier = Modifier.size(145.dp)
+                        )
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Column(
+                           horizontalAlignment = Alignment.CenterHorizontally,
+                          verticalArrangement = Arrangement.spacedBy(9.dp)
+                        ) {
+                            Text(
+                                text = "No Tasks",
+                                fontSize = 17.sp,
+                                fontFamily = priegoFont,
+                                color = White,
+                                fontWeight = FontWeight.Medium,
+                                textAlign = TextAlign.Center
+                            )
+                            Text(
+                                text = "There are no specific tasks tied to this date.",
+                                fontSize = 13.sp,
+                                fontFamily = priegoFont,
+                                color = White,
+                                fontWeight = FontWeight.Normal,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -231,7 +279,7 @@ fun Day(
                     )
                     Text(
                         text = dateFormatter.format(date),
-                        fontSize = 14.sp,
+                        fontSize = 15.sp,
                         fontFamily = priegoFont,
                         color = if (isSelected) Black else White,
                         fontWeight = FontWeight.Medium
@@ -327,7 +375,7 @@ fun CardTask(
                         fontSize = 12.sp,
                         color =  primaryColor,
                         fontFamily = priegoFont,
-                        fontWeight = FontWeight.Normal
+                        fontWeight = FontWeight.Medium
                     )
                 }
 
@@ -350,22 +398,25 @@ fun CardTask(
 
             Text(
                 text = task.title,
-                fontSize = 19.sp,
+                fontSize = 20.sp,
                 color =  primaryColor,
                 fontFamily = priegoFont,
-                fontWeight = FontWeight.Medium
+                fontWeight = FontWeight.Medium,
+                maxLines = 2
             )
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.fillMaxWidth()
+                horizontalArrangement = Arrangement.spacedBy(7.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 2.dp)
             ) {
                 Icon(
-                    imageVector = FeatherIcons.Calendar,
+                    painter = painterResource(id = R.drawable.calendar_icon),
                     contentDescription = null,
                     tint = primaryColor,
-                    modifier = Modifier.size(15.dp)
+                    modifier = Modifier.size(16.dp)
                 )
 
                 Text(
@@ -373,7 +424,7 @@ fun CardTask(
                     fontSize = 13.sp,
                     color =  primaryColor,
                     fontFamily = priegoFont,
-                    fontWeight = FontWeight.Normal
+                    fontWeight = FontWeight.Medium
                 )
             }
 

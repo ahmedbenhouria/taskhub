@@ -80,7 +80,6 @@ import com.task.management.presentation.ui.theme.GreyLight
 import com.task.management.presentation.ui.theme.White
 import com.task.management.presentation.ui.theme.priegoFont
 import compose.icons.FeatherIcons
-import compose.icons.feathericons.Calendar
 import compose.icons.feathericons.ChevronDown
 import compose.icons.feathericons.Clock
 import compose.icons.feathericons.MinusCircle
@@ -380,11 +379,11 @@ fun DateTimePickerSection(
                     )
 
                     Icon(
-                        imageVector = FeatherIcons.Calendar,
+                        painter = painterResource(id = R.drawable.calendar_icon),
                         contentDescription = null,
                         tint = White,
                         modifier = Modifier
-                            .size(18.dp)
+                            .size(20.dp)
                             .alpha(0.8f)
                             .clickable {
                                 calendarState.show()
@@ -437,7 +436,7 @@ fun DateTimePickerSection(
                         contentDescription = null,
                         tint = White,
                         modifier = Modifier
-                            .size(18.dp)
+                            .size(19.dp)
                             .alpha(0.8f)
                             .clickable {
                                 timeState.show()

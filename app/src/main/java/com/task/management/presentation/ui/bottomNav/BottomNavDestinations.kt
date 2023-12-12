@@ -1,7 +1,6 @@
 package com.task.management.presentation.ui.bottomNav
 
 import androidx.annotation.StringRes
-import androidx.compose.ui.graphics.vector.ImageVector
 import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
 import com.task.management.R
 import com.task.management.presentation.ui.screens.destinations.AddScreenDestination
@@ -9,21 +8,16 @@ import com.task.management.presentation.ui.screens.destinations.HomeScreenDestin
 import com.task.management.presentation.ui.screens.destinations.MessageScreenDestination
 import com.task.management.presentation.ui.screens.destinations.ProfileScreenDestination
 import com.task.management.presentation.ui.screens.destinations.TasksScreenDestination
-import compose.icons.FeatherIcons
-import compose.icons.feathericons.Folder
-import compose.icons.feathericons.Home
-import compose.icons.feathericons.MessageCircle
-import compose.icons.feathericons.Plus
-import compose.icons.feathericons.User
 
 enum class BottomBarDestination(
     val direction: DirectionDestinationSpec,
-    val icon: ImageVector,
+    val unselectedIcon: Int,
+    val selectedIcon: Int,
     @StringRes val label: Int
 ) {
-    Home(HomeScreenDestination, FeatherIcons.Home, R.string.home),
-    Tasks(TasksScreenDestination, FeatherIcons.Folder, R.string.tasks),
-    Add(AddScreenDestination, FeatherIcons.Plus, R.string.add),
-    Message(MessageScreenDestination, FeatherIcons.MessageCircle, R.string.message),
-    Profile(ProfileScreenDestination, FeatherIcons.User, R.string.profile)
+    Home(HomeScreenDestination, R.drawable.house_regular, R.drawable.house_solid, R.string.home),
+    Tasks(TasksScreenDestination, R.drawable.folder_regular, R.drawable.folder_solid, R.string.tasks),
+    Add(AddScreenDestination, R.drawable.plus_icon, R.drawable.plus_icon, R.string.add),
+    Message(MessageScreenDestination, R.drawable.comment_regular, R.drawable.comment_solid, R.string.message),
+    Profile(ProfileScreenDestination, R.drawable.user_regular, R.drawable.user_solid, R.string.profile)
 }

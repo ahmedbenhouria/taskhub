@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.task.management.presentation.ui.screens.destinations.HomeScreenDestination
 import com.task.management.presentation.ui.theme.Black
 import com.task.management.presentation.ui.theme.White
 import com.task.management.presentation.ui.theme.priegoFont
@@ -59,7 +58,7 @@ fun AddScreen(
                 sheetState = sheetState,
                 onDismissRequest = {
                     isSheetOpen = false
-                    destinationsNavigator.navigate(HomeScreenDestination)
+                    destinationsNavigator.popBackStack()
                 },
                 containerColor = Black,
                 modifier = Modifier.padding(top = 7.dp)
@@ -89,7 +88,7 @@ fun AddScreen(
                                     sheetState.hide()
                                     viewModel.resetTaskState()
                                 }
-                                destinationsNavigator.navigate(HomeScreenDestination)
+                                destinationsNavigator.popBackStack()
                             }
                         )
                         Text(
@@ -118,7 +117,7 @@ fun AddScreen(
                                 sheetState.hide()
                                 viewModel.resetTaskState()
                             }
-                            destinationsNavigator.navigate(HomeScreenDestination)
+                            destinationsNavigator.popBackStack()
                         }
                     })
                 }

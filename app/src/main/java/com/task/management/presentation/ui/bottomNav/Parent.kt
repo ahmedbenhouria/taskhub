@@ -25,7 +25,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -126,10 +128,8 @@ fun BottomBar(
                         val firstBottomBarDestination = navController.graph.findStartDestination()
 
                         popUpTo(firstBottomBarDestination.id) {
-                            inclusive = true
                             saveState = true
                         }
-                        launchSingleTop = true
                         restoreState = true
                     }
                 }
@@ -161,14 +161,21 @@ fun RowScope.AddItem(
                                 color = White,
                                 shape = CircleShape,
                             )
-                            .padding(13.dp)
+                            .padding(11.dp)
+                            .padding(end = 2.dp)
                     )
                 }
                 else -> {
                     NavIconComponent(
                         destination = destination,
                         isNavItemSelected = isNavItemSelected,
-                        modifier = Modifier.size(26.dp)
+                        modifier = Modifier.size(
+                            when (destination.label) {
+                                R.string.home -> 29.dp
+                                R.string.profile -> 22.dp
+                                else -> 23.dp
+                            }
+                        ).alpha(0.9f)
                     )
                 }
             }
@@ -187,7 +194,12 @@ fun NavIconComponent(
     modifier: Modifier = Modifier
 ) {
     Icon(
-        imageVector = destination.icon,
+        painter = painterResource(
+            id = if (isNavItemSelected)
+                destination.selectedIcon
+            else
+                destination.unselectedIcon
+        ),
         contentDescription = stringResource(destination.label),
         tint = when (destination.label) {
             R.string.add -> {
@@ -196,13 +208,7 @@ fun NavIconComponent(
                 } else
                     Black
             }
-
-            else -> {
-                if (isNavItemSelected) {
-                    Color.Gray
-                } else
-                    White
-            }
+            else -> White
         },
         modifier = modifier
     )
