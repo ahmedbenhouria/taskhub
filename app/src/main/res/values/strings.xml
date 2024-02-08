@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Task Management</string>
+    <string name="app_name">TaskHub</string>
 
     <string name="home">Home</string>
     <string name="tasks">Tasks</string>

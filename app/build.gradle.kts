@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.task.management"
+    namespace = "com.task.hub"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.task.management"
+        applicationId = "com.task.hub"
         minSdk = 28
         targetSdk = 34
         versionCode = 1
