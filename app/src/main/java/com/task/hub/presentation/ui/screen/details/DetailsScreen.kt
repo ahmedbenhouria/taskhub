@@ -1,4 +1,4 @@
-package com.task.hub.presentation.ui.screens.details
+package com.task.hub.presentation.ui.screen.details
 
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -36,7 +36,7 @@ fun DetailsScreen(
             TopBarComponent(destinationsNavigator, task)
         }
     ) { paddingValues ->
-        DetailsContent(paddingValues)
+        DetailsContent(paddingValues, task)
     }
 }
 

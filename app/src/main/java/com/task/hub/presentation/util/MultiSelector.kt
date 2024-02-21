@@ -1,4 +1,4 @@
-package com.task.hub.presentation.utils
+package com.task.hub.presentation.util
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing

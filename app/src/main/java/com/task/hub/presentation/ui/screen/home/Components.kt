@@ -1,4 +1,4 @@
-package com.task.hub.presentation.ui.screens.home
+package com.task.hub.presentation.ui.screen.home
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.Image
@@ -29,9 +29,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -53,9 +51,8 @@ import com.kizitonwose.calendar.compose.weekcalendar.rememberWeekCalendarState
 import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.task.hub.R
-import com.task.hub.data.TaskViewModel
 import com.task.hub.data.local.Task
-import com.task.hub.presentation.ui.screens.destinations.DetailsScreenDestination
+import com.task.hub.presentation.ui.screen.destinations.DetailsScreenDestination
 import com.task.hub.presentation.ui.theme.Black
 import com.task.hub.presentation.ui.theme.Blue
 import com.task.hub.presentation.ui.theme.Grey
@@ -147,23 +144,22 @@ fun InlineTitleIconComponent() {
 @Composable
 fun WeekCalenderSection(
     destinationsNavigator: DestinationsNavigator,
-    taskViewModel: TaskViewModel = hiltViewModel(),
-    homeViewModel: HomeViewModel = hiltViewModel()
+    viewModel: TaskViewModel = hiltViewModel(),
 ) {
-    val listTasks by taskViewModel.getAllTasks.collectAsStateWithLifecycle()
-    val selectedDate = homeViewModel.selectedDate.collectAsStateWithLifecycle()
+    val dateState by viewModel.dateState.collectAsStateWithLifecycle()
 
-    val currentDate = remember { selectedDate.value }
-    val startDate = remember { currentDate.minusDays(30) }
-    val endDate = remember { currentDate.plusDays(30) }
+    val listTasks = dateState.listTasks
+    val selectedDate = dateState.selectedDate
 
-    var selection by remember { mutableStateOf(currentDate) }
+    val startDate = remember { selectedDate.minusDays(30) }
+    val endDate = remember { selectedDate.plusDays(30) }
+
     val firstDayOfWeek = remember { firstDayOfWeekFromLocale() }
 
     val state = rememberWeekCalendarState(
         startDate = startDate,
         endDate = endDate,
-        firstVisibleWeekDate = currentDate,
+        firstVisibleWeekDate = selectedDate,
         firstDayOfWeek = firstDayOfWeek
     )
 
@@ -174,24 +170,21 @@ fun WeekCalenderSection(
                 .padding(horizontal = 20.dp, vertical = 5.dp),
             state = state,
             dayContent = { day ->
-                Day(date = day.date, isSelected = selection == day.date) { clicked ->
-                    if (selection != clicked) {
-                        selection = clicked
-                        homeViewModel.setSelectedDate(clicked)
+                Day(date = day.date, isSelected = selectedDate == day.date) { clicked ->
+                    if (selectedDate != clicked) {
+                        viewModel.setSelectedDate(clicked)
                     }
                 }
             }
         )
 
-        val listState = listTasks.any { it.dueDate == selection }
-
         AnimatedContent(
-            targetState = listState,
+            targetState = dateState.hasTasks,
             label = "",
         ) { targetState ->
             when (targetState) {
                 true -> {
-                    TasksListSection(listTasks, selection, destinationsNavigator)
+                    TasksListSection(listTasks, destinationsNavigator)
                 }
                 else -> {
                     Column(
@@ -293,7 +286,6 @@ fun Day(
 @Composable
 fun TasksListSection(
     listTasks: List<Task>,
-    selection: LocalDate,
     destinationsNavigator: DestinationsNavigator
 ) {
     LazyColumn(
@@ -304,24 +296,35 @@ fun TasksListSection(
             .padding(vertical = 4.dp),
         contentPadding = PaddingValues(bottom = 80.dp)
     ) {
-        items(listTasks.filter { it.priority == "High" && it.dueDate == selection }) {task ->
-            CardTask(
-                task = task,
-                onClick = {
-                    destinationsNavigator.navigate(DetailsScreenDestination(task))
-                })
-        }
-        items(listTasks.filter { (it.priority == "Medium" || it.priority == "Low") && it.dueDate == selection }) {task ->
-            CardTask(
-                task = task,
-                onClick = {
-                    destinationsNavigator.navigate(DetailsScreenDestination(task))
-                },
-                containerColor = Grey,
-                primaryColor = White,
-                secondaryColor = White,
-                backgroundColor = GreyLight
-            )
+        items(
+            items = listTasks,
+            key = { task ->
+                task.id
+            }
+        ) {task ->
+            when (task.priority) {
+                "High" -> {
+                    CardTask(
+                        task = task,
+                        onClick = {
+                            destinationsNavigator.navigate(DetailsScreenDestination(task))
+                        }
+                    )
+                }
+                else -> {
+                    CardTask(
+                        task = task,
+                        onClick = {
+                            destinationsNavigator.navigate(DetailsScreenDestination(task))
+                        },
+                        containerColor = Grey,
+                        primaryColor = White,
+                        secondaryColor = White,
+                        backgroundColor = GreyLight
+                    )
+                }
+            }
+
         }
     }
 

@@ -1,4 +1,4 @@
-package com.task.hub.presentation.ui.bottomNav
+package com.task.hub.presentation.ui.screen.bottomNavigation
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
@@ -42,14 +42,14 @@ import com.ramcosta.composedestinations.animations.defaults.RootNavGraphDefaultA
 import com.ramcosta.composedestinations.navigation.navigate
 import com.ramcosta.composedestinations.rememberNavHostEngine
 import com.task.hub.R
-import com.task.hub.presentation.ui.screens.NavGraphs
+import com.task.hub.presentation.ui.screen.NavGraphs
 import com.task.hub.presentation.ui.theme.Black
 import com.task.hub.presentation.ui.theme.White
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun Parent() {
+fun ParentNav() {
     val navController = rememberNavController()
     val systemUiController = rememberSystemUiController()
 

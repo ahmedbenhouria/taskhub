@@ -1,4 +1,4 @@
-package com.task.hub.presentation.ui.screens.home
+package com.task.hub.presentation.ui.screen.home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues

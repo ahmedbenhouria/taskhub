@@ -1,4 +1,4 @@
-package com.task.hub.presentation.ui.screens.add
+package com.task.hub.presentation.ui.screen.add
 
 import androidx.compose.runtime.mutableStateListOf
 import java.time.LocalDate

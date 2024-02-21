@@ -1,7 +1,7 @@
 package com.task.hub.domain.usecase
 
 import com.task.hub.domain.model.TaskValidationState
-import com.task.hub.presentation.ui.screens.add.Member
+import com.task.hub.presentation.ui.screen.add.Member
 import java.time.LocalDate
 
 class ValidateTaskUseCase {

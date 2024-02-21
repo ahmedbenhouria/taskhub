@@ -1,4 +1,4 @@
-package com.task.hub.presentation.ui.screens
+package com.task.hub.presentation.ui.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

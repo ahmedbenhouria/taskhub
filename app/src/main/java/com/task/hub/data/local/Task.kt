@@ -3,7 +3,7 @@ package com.task.hub.data.local
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.task.hub.presentation.ui.screens.add.Member
+import com.task.hub.presentation.ui.screen.add.Member
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 import java.time.LocalDate

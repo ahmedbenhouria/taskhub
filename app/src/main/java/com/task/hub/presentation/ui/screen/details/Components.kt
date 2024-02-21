@@ -1,4 +1,4 @@
-package com.task.hub.presentation.ui.screens.details
+package com.task.hub.presentation.ui.screen.details
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.BorderStroke
@@ -85,7 +85,10 @@ import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun DetailsContent(paddingValues: PaddingValues) {
+fun DetailsContent(
+    paddingValues: PaddingValues,
+    task: Task
+) {
     Box(
         modifier = Modifier
             .padding(paddingValues)
@@ -97,7 +100,7 @@ fun DetailsContent(paddingValues: PaddingValues) {
                 pagerContent = { title ->
                     when (title) {
                         "Overview" -> {
-                            OverviewContent()
+                            OverviewContent(task)
                         }
                         "Activity" -> {
                             Text(text = "Activity", color = White)
@@ -110,12 +113,14 @@ fun DetailsContent(paddingValues: PaddingValues) {
 }
 
 @Composable
-fun OverviewContent() {
+fun OverviewContent(
+    task: Task
+) {
     Column(
         verticalArrangement = Arrangement.Top
     ) {
         ExpandableText(
-            text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eget ex at tortor hendrerit consectetur. Etiam id magna vel nisl efficitur malesuada. Curabitur tortor eros, lacinia nec auctor eget, euismod a felis.",
+            text = task.description,
             style = TextStyle(
                 fontFamily = priegoFont,
                 color = White,

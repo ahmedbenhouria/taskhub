@@ -1,4 +1,4 @@
-package com.task.hub.presentation.ui.screens.add
+package com.task.hub.presentation.ui.screen.add
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,8 +15,8 @@ class AddTaskViewModel(
     private val validateTaskUseCase: ValidateTaskUseCase = ValidateTaskUseCase()
 ): ViewModel() {
 
-    private var _taskState = MutableStateFlow(TaskFormState())
-    val taskState = _taskState.asStateFlow()
+    private var _taskFormState = MutableStateFlow(TaskFormState())
+    val taskFormState = _taskFormState.asStateFlow()
 
     private val validationEventChannel = Channel<ValidationEvent>()
     val validationEvents = validationEventChannel.receiveAsFlow()
@@ -24,25 +24,25 @@ class AddTaskViewModel(
     fun onEvent(event: TaskFormEvent) {
         when (event) {
             is TaskFormEvent.TitleChanged -> {
-                _taskState.update { it.copy(title = event.title) }
+                _taskFormState.update { it.copy(title = event.title) }
             }
             is TaskFormEvent.DescriptionChanged -> {
-                _taskState.update { it.copy(description = event.description) }
+                _taskFormState.update { it.copy(description = event.description) }
             }
             is TaskFormEvent.DueDateChanged -> {
-                _taskState.update { it.copy(dueDate = event.dueDate) }
+                _taskFormState.update { it.copy(dueDate = event.dueDate) }
             }
             is TaskFormEvent.EstimateTaskChanged -> {
-                _taskState.update { it.copy(estimateTask = event.estimateTime) }
+                _taskFormState.update { it.copy(estimateTask = event.estimateTime) }
             }
             is TaskFormEvent.PriorityChanged -> {
-                _taskState.update { it.copy(selectedPriority = event.priority) }
+                _taskFormState.update { it.copy(selectedPriority = event.priority) }
             }
             is TaskFormEvent.MemberAdded -> {
-                _taskState.value.selectedMembers.add(event.member)
+                _taskFormState.value.selectedMembers.add(event.member)
             }
             is TaskFormEvent.MemberRemoved -> {
-                _taskState.value.selectedMembers.remove(event.member)
+                _taskFormState.value.selectedMembers.remove(event.member)
             }
             is TaskFormEvent.Submit -> {
                 submitData()
@@ -52,10 +52,10 @@ class AddTaskViewModel(
 
     private fun submitData() {
         val validationState = validateTaskUseCase.execute(
-            _taskState.value.title,
-            _taskState.value.description,
-            _taskState.value.dueDate,
-            _taskState.value.selectedMembers
+            _taskFormState.value.title,
+            _taskFormState.value.description,
+            _taskFormState.value.dueDate,
+            _taskFormState.value.selectedMembers
         )
 
         viewModelScope.launch {
@@ -85,7 +85,7 @@ class AddTaskViewModel(
     }
 
     fun resetTaskState() {
-        _taskState.value = TaskFormState()
+        _taskFormState.value = TaskFormState()
     }
 
     sealed class ValidationEvent {

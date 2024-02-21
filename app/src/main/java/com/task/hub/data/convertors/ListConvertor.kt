@@ -2,7 +2,7 @@ package com.task.hub.data.convertors
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson
-import com.task.hub.presentation.ui.screens.add.Member
+import com.task.hub.presentation.ui.screen.add.Member
 
 class ListConvertor {
 

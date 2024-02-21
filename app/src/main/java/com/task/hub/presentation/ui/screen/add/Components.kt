@@ -1,4 +1,4 @@
-package com.task.hub.presentation.ui.screens.add
+package com.task.hub.presentation.ui.screen.add
 
 import android.os.Parcelable
 import android.widget.Toast
@@ -72,8 +72,8 @@ import com.michaelflisar.composedialogs.dialogs.input.NumberPickerSetup
 import com.michaelflisar.composedialogs.dialogs.input.rememberDialogNumber
 import com.task.hub.R
 import com.task.hub.data.local.Task
-import com.task.hub.data.TaskViewModel
-import com.task.hub.presentation.utils.MultiSelector
+import com.task.hub.presentation.ui.screen.home.TaskViewModel
+import com.task.hub.presentation.util.MultiSelector
 import com.task.hub.presentation.ui.theme.Black
 import com.task.hub.presentation.ui.theme.Grey
 import com.task.hub.presentation.ui.theme.GreyLight
@@ -95,7 +95,7 @@ fun CreateTaskContent(
     addTaskViewModel: AddTaskViewModel = viewModel(),
     taskViewModel: TaskViewModel = hiltViewModel()
 ) {
-    val state by addTaskViewModel.taskState.collectAsStateWithLifecycle()
+    val state by addTaskViewModel.taskFormState.collectAsStateWithLifecycle()
 
     val context = LocalContext.current
 

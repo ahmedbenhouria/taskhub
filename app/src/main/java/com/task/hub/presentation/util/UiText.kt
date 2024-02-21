@@ -1,4 +1,4 @@
-package com.task.hub.presentation.utils
+package com.task.hub.presentation.util
 
 import android.content.Context
 import androidx.annotation.StringRes
