@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -398,7 +399,10 @@ fun TopBarComponent(
         }
 
         Column(
-            modifier = Modifier.padding(horizontal = 28.dp, vertical = 2.dp)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 28.dp),
+            verticalArrangement = Arrangement.SpaceAround
         ) {
             Text(
                 text = task.title,
@@ -410,7 +414,6 @@ fun TopBarComponent(
 
             Row(
                 modifier = Modifier
-                    .fillMaxSize()
                     .padding(vertical = 23.dp),
                 horizontalArrangement = Arrangement.spacedBy(38.dp)
             ) {
