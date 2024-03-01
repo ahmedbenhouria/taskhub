@@ -146,7 +146,7 @@ fun WeekCalenderSection(
     destinationsNavigator: DestinationsNavigator,
     viewModel: TaskViewModel = hiltViewModel(),
 ) {
-    val dateState by viewModel.dateState.collectAsStateWithLifecycle()
+    val dateState by viewModel.dateUiState.collectAsStateWithLifecycle()
 
     val listTasks = dateState.listTasks
     val selectedDate = dateState.selectedDate

@@ -26,15 +26,15 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepositoryIm
             repository.getTasksByDate(date)
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
-    private var _dateState = MutableStateFlow(DateState())
+    private var _dateUiState = MutableStateFlow(DateUiState())
 
-    val dateState = combine(_dateState, listTasks, selectedDate) { dateState, listTasks, selectedDate ->
-        dateState.copy(
+    val dateUiState = combine(_dateUiState, listTasks, selectedDate) { dateUiState, listTasks, selectedDate ->
+        dateUiState.copy(
             selectedDate = selectedDate,
             listTasks = listTasks,
             hasTasks = listTasks.any { it.dueDate == selectedDate }
         )
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), DateState())
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), DateUiState())
 
     fun insertTask(task: Task) {
         viewModelScope.launch {
