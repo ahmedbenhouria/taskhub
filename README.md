@@ -1,4 +1,4 @@
-# TaskHub: Task Management App using Jetpack Compose
+# TaskHub: Task Management App
 Template Android app using Clean Architecture and MVVM. Includes Jetpack Compose, ViewModel, Form Validation (MultiSelector, DatePicker, etc.), Calendar, Compose Destinations Bottom Navigation, Compose Dialogs, and additional useful libraries.
 
 Dribble [Link](https://www.youtube.com/watch?v=Kjun9QBr82Y) for App Design.
