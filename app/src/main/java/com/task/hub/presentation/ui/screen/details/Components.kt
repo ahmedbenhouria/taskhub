@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -366,7 +365,7 @@ fun TopBarComponent(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .height(272.dp)
+            .height(283.dp)
             .statusBarsPadding()
     ) {
         Row(
@@ -401,12 +400,12 @@ fun TopBarComponent(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 28.dp),
+                .padding(start = 28.dp, end = 15.dp),
             verticalArrangement = Arrangement.SpaceAround
         ) {
             Text(
                 text = task.title,
-                fontSize = 25.sp,
+                fontSize = 24.sp,
                 color =  Black,
                 fontFamily = priegoFont,
                 fontWeight = FontWeight.Medium
