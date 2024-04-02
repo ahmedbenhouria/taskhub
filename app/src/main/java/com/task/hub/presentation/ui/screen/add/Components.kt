@@ -142,7 +142,7 @@ fun CreateTaskContent(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier
             .fillMaxSize()
-            .padding(vertical = 38.dp)
+            .padding(top = 38.dp)
             .verticalScroll(rememberScrollState())
     ) {
         CustomTextField(
