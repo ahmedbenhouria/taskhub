@@ -23,20 +23,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.task.hub.presentation.ui.theme.Black
 import com.task.hub.presentation.ui.theme.White
 import com.task.hub.presentation.ui.theme.priegoFont
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Destination
 @Composable
-fun AddScreen(
-    destinationsNavigator: DestinationsNavigator,
-    viewModel: AddTaskViewModel = viewModel()
+fun AddTaskScreen(
+    navController: NavController,
+    viewModel: AddTaskViewModel = hiltViewModel()
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -58,7 +56,7 @@ fun AddScreen(
                 sheetState = sheetState,
                 onDismissRequest = {
                     isSheetOpen = false
-                    destinationsNavigator.popBackStack()
+                    navController.popBackStack()
                 },
                 containerColor = Black,
                 modifier = Modifier.padding(top = 7.dp)
@@ -87,8 +85,8 @@ fun AddScreen(
                                 scope.launch {
                                     sheetState.hide()
                                     viewModel.resetTaskState()
+                                    navController.popBackStack()
                                 }
-                                destinationsNavigator.popBackStack()
                             }
                         )
                         Text(
@@ -116,8 +114,8 @@ fun AddScreen(
                             scope.launch {
                                 sheetState.hide()
                                 viewModel.resetTaskState()
+                                navController.popBackStack()
                             }
-                            destinationsNavigator.popBackStack()
                         }
                     })
                 }

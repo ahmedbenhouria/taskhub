@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.task.hub.data.local.TaskDao
 import com.task.hub.data.local.TaskDatabase
 import com.task.hub.data.repositories.TaskRepositoryImpl
+import com.task.hub.domain.usecase.ValidateTaskUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -37,4 +38,10 @@ object RoomModule {
             TaskDatabase::class.java,
             "task_database"
         ).build()
+
+    @Singleton
+    @Provides
+    fun getValidateTaskUseCase(): ValidateTaskUseCase {
+        return ValidateTaskUseCase()
+    }
 }

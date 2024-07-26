@@ -1,6 +1,10 @@
 package com.task.hub.presentation.ui.screen.home
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -46,13 +50,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import com.kizitonwose.calendar.compose.WeekCalendar
 import com.kizitonwose.calendar.compose.weekcalendar.rememberWeekCalendarState
 import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.task.hub.R
 import com.task.hub.data.local.Task
-import com.task.hub.presentation.ui.screen.destinations.DetailsScreenDestination
+import com.task.hub.presentation.ui.screen.navigation.Destinations
 import com.task.hub.presentation.ui.theme.Black
 import com.task.hub.presentation.ui.theme.Blue
 import com.task.hub.presentation.ui.theme.Grey
@@ -143,8 +147,8 @@ fun InlineTitleIconComponent() {
 
 @Composable
 fun WeekCalenderSection(
-    destinationsNavigator: DestinationsNavigator,
-    viewModel: TaskViewModel = hiltViewModel(),
+    navController: NavController,
+    viewModel: TaskViewModel = hiltViewModel()
 ) {
     val dateState by viewModel.dateUiState.collectAsStateWithLifecycle()
 
@@ -180,11 +184,15 @@ fun WeekCalenderSection(
 
         AnimatedContent(
             targetState = dateState.hasTasks,
+            transitionSpec = {
+                fadeIn(animationSpec = tween(200)).togetherWith(
+                    fadeOut(animationSpec = tween(200)))
+            },
             label = "",
         ) { targetState ->
             when (targetState) {
                 true -> {
-                    TasksListSection(listTasks, destinationsNavigator)
+                    TasksListSection(listTasks, navController)
                 }
                 else -> {
                     Column(
@@ -286,7 +294,7 @@ fun Day(
 @Composable
 fun TasksListSection(
     listTasks: List<Task>,
-    destinationsNavigator: DestinationsNavigator
+    navController: NavController
 ) {
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -298,16 +306,14 @@ fun TasksListSection(
     ) {
         items(
             items = listTasks,
-            key = { task ->
-                task.id
-            }
-        ) {task ->
+            key = { task -> task.id }
+        ) { task ->
             when (task.priority) {
                 "High" -> {
                     CardTask(
                         task = task,
                         onClick = {
-                            destinationsNavigator.navigate(DetailsScreenDestination(task))
+                            navController.navigate(Destinations.Details(task.id))
                         }
                     )
                 }
@@ -315,7 +321,7 @@ fun TasksListSection(
                     CardTask(
                         task = task,
                         onClick = {
-                            destinationsNavigator.navigate(DetailsScreenDestination(task))
+                            navController.navigate(Destinations.Details(task.id))
                         },
                         containerColor = Grey,
                         primaryColor = White,

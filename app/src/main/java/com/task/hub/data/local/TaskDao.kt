@@ -20,4 +20,6 @@ interface TaskDao {
     @Query("SELECT * FROM task WHERE dueDate =:selectedDate")
     fun getTasksByDate(selectedDate: LocalDate): Flow<List<Task>>
 
+    @Query("SELECT * FROM task WHERE id =:taskId")
+    fun getTaskById(taskId: Int): Task
 }
