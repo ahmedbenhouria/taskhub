@@ -11,14 +11,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.task.hub.presentation.ui.theme.Black
 
-@Destination(start = true)
 @Composable
-fun HomeScreen(destinationsNavigator: DestinationsNavigator) {
+fun HomeScreen(
+    navController: NavController
+) {
     val systemUiController = rememberSystemUiController()
 
     SideEffect {
@@ -34,14 +34,14 @@ fun HomeScreen(destinationsNavigator: DestinationsNavigator) {
             TopBarComponent()
         }
     ) { paddingValues ->
-        Content(paddingValues, destinationsNavigator)
+        Content(paddingValues, navController)
     }
 }
 
 @Composable
 fun Content(
     paddingValues: PaddingValues,
-    destinationsNavigator: DestinationsNavigator
+    navController: NavController
 ) {
     Column(
         horizontalAlignment = Alignment.Start,
@@ -51,7 +51,7 @@ fun Content(
             .padding(top = 5.dp)
     ) {
         InlineTitleIconComponent()
-        WeekCalenderSection(destinationsNavigator)
+        WeekCalenderSection(navController)
     }
 }
 

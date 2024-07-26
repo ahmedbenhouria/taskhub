@@ -9,4 +9,5 @@ interface TaskRepository {
 
     suspend fun getTasksByDate(selectedDate: LocalDate): Flow<List<Task>>
 
+    suspend fun getTaskById(taskId: Int): Task
 }

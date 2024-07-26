@@ -4,16 +4,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.task.hub.domain.model.TaskValidationState
 import com.task.hub.domain.usecase.ValidateTaskUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AddTaskViewModel(
-    private val validateTaskUseCase: ValidateTaskUseCase = ValidateTaskUseCase()
-): ViewModel() {
+@HiltViewModel
+class AddTaskViewModel @Inject constructor(private val validateTaskUseCase: ValidateTaskUseCase): ViewModel() {
 
     private var _taskFormState = MutableStateFlow(TaskFormState())
     val taskFormState = _taskFormState.asStateFlow()

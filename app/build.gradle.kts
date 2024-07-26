@@ -4,6 +4,8 @@ plugins {
     id("com.google.devtools.ksp")
     id ("dagger.hilt.android.plugin")
     id ("kotlin-parcelize")
+    id ("org.jetbrains.kotlin.plugin.serialization")
+    id("org.jetbrains.kotlin.plugin.compose") version "2.0.0"
 }
 
 android {
@@ -54,31 +56,35 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
-    implementation ("androidx.compose.runtime:runtime:1.6.4")
-    implementation ("androidx.compose.runtime:runtime-livedata:1.6.4")
-    implementation ("androidx.compose.runtime:runtime-rxjava2:1.6.4")
-    implementation("androidx.activity:activity-compose:1.8.2")
-    implementation(platform("androidx.compose:compose-bom:2024.03.00"))
+    implementation("androidx.core:core-ktx:1.13.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.3")
+    implementation ("androidx.compose.runtime:runtime:1.6.8")
+    implementation ("androidx.compose.runtime:runtime-livedata:1.6.8")
+    implementation ("androidx.compose.runtime:runtime-rxjava2:1.6.8")
+    implementation("androidx.activity:activity-compose:1.9.0")
+    implementation(platform("androidx.compose:compose-bom:2024.06.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3:1.2.1")
+
     testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2024.03.00"))
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    androidTestImplementation(platform("androidx.compose:compose-bom:2024.06.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
-    // Compose Destinations
-    implementation ("io.github.raamcosta.compose-destinations:core:1.10.2")
-    ksp ("io.github.raamcosta.compose-destinations:ksp:1.10.2")
+    implementation ("androidx.navigation:navigation-compose:2.8.0-beta05")
+    implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.0")
+
+    /*    // Compose Destinations
+        implementation ("io.github.raamcosta.compose-destinations:core:1.10.2")
+        ksp ("io.github.raamcosta.compose-destinations:ksp:1.10.2")*/
 
     // Compose Lifecycles
-    val lifecycleVersion = "2.7.0"
+    val lifecycleVersion = "2.8.3"
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycleVersion")
@@ -90,27 +96,27 @@ dependencies {
     implementation ("com.google.accompanist:accompanist-systemuicontroller:0.32.0")
 
     // Compose Calendar library
-    implementation ("com.kizitonwose.calendar:compose:2.4.0")
+    implementation ("com.kizitonwose.calendar:compose:2.6.0-beta02")
 
     // Compose Date Picker Dialog Library
     implementation ("com.maxkeppeler.sheets-compose-dialogs:core:1.2.0")
     implementation ("com.maxkeppeler.sheets-compose-dialogs:calendar:1.2.0")
 
     // Compose Number Selector Dialog Library
-    implementation ("com.github.MFlisar.ComposeDialogs:core:1.0.4")
-    implementation ("com.github.MFlisar.ComposeDialogs:dialog-number:1.0.4")
+    implementation ("com.github.MFlisar.ComposeDialogs:core:1.0.8")
+    implementation ("com.github.MFlisar.ComposeDialogs:dialog-number:1.0.8")
 
     // Custom Toast Library
     implementation ("com.github.GrenderG:Toasty:1.5.2")
 
     // Dagger Hilt
-    val daggerHiltVersion = "2.48.1"
+    val daggerHiltVersion = "2.51.1"
     implementation ("com.google.dagger:hilt-android:$daggerHiltVersion")
     ksp ("com.google.dagger:hilt-android-compiler:$daggerHiltVersion")
-    implementation ("androidx.hilt:hilt-navigation-compose:1.1.0")
+    implementation ("androidx.hilt:hilt-navigation-compose:1.2.0")
 
     // Room components
-    val roomVersion = "2.6.0"
+    val roomVersion = "2.6.1"
     implementation ("androidx.room:room-runtime:$roomVersion")
     ksp ("androidx.room:room-compiler:$roomVersion")
     implementation ("androidx.room:room-ktx:$roomVersion")

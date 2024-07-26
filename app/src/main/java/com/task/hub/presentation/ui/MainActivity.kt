@@ -8,7 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
-import com.task.hub.presentation.ui.screen.bottomNavigation.ParentNav
+import com.task.hub.presentation.ui.screen.navigation.ParentNav
 import com.task.hub.presentation.ui.theme.TaskManagementAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 

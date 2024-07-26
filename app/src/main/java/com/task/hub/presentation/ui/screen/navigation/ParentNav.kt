@@ -1,10 +1,7 @@
-package com.task.hub.presentation.ui.screen.bottomNavigation
+package com.task.hub.presentation.ui.screen.navigation
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
@@ -20,8 +17,10 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -31,21 +30,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination
-import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.ramcosta.composedestinations.DestinationsNavHost
-import com.ramcosta.composedestinations.animations.defaults.RootNavGraphDefaultAnimations
-import com.ramcosta.composedestinations.navigation.navigate
-import com.ramcosta.composedestinations.rememberNavHostEngine
 import com.task.hub.R
-import com.task.hub.presentation.ui.screen.NavGraphs
 import com.task.hub.presentation.ui.theme.Black
 import com.task.hub.presentation.ui.theme.White
-
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -65,19 +56,8 @@ fun ParentNav() {
         bottomBar = {
             BottomBar(navController)
         }
-
     ) {
-        val navHostEngine = rememberNavHostEngine(
-            rootDefaultAnimations = RootNavGraphDefaultAnimations(
-                enterTransition = { fadeIn(animationSpec = tween(400)) },
-                exitTransition = { fadeOut(animationSpec = tween(300)) }
-        ))
-
-        DestinationsNavHost(
-            navController = navController,
-            navGraph = NavGraphs.root,
-            engine = navHostEngine
-        )
+        MainNavGraph(navController)
     }
 }
 
@@ -86,21 +66,27 @@ fun BottomBar(
     navController: NavController
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navBackStackEntry?.destination
+
+    val currentRoute = navBackStackEntry?.destination?.route
+        ?: BottomNavScreens.Home.route::class.qualifiedName.orEmpty()
+
+    val currentRouteTrimmed by remember(currentRoute) {
+        derivedStateOf { currentRoute.substringAfterLast(".") }
+    }
 
     var bottomBarState by rememberSaveable { (mutableStateOf(true)) }
 
-    when (navBackStackEntry?.destination?.route) {
-        "home_screen" -> {
+    when (currentRouteTrimmed) {
+        BottomNavScreens.Home.route.toString() -> {
             bottomBarState = true
         }
-        "message_screen" -> {
+        BottomNavScreens.Message.route.toString() -> {
             bottomBarState = true
         }
-        "profile_screen" -> {
+        BottomNavScreens.Profile.route.toString() -> {
             bottomBarState = true
         }
-        "tasks_screen" -> {
+        BottomNavScreens.Tasks.route.toString() -> {
             bottomBarState = true
         }
         else -> {
@@ -118,19 +104,23 @@ fun BottomBar(
             contentColor = Black,
             modifier = Modifier.height(100.dp)
         ) {
-            BottomBarDestination.entries.forEach { destination ->
-                AddItem(
-                    destination = destination,
-                    currentDestination = currentDestination,
-                ) {
-                    navController.navigate(destination.direction) {
-                        launchSingleTop = true
-                        val firstBottomBarDestination = navController.graph.findStartDestination()
+            BottomNavScreens.entries.forEach { screen ->
+                val isNavItemSelected = currentRouteTrimmed == screen.route.toString()
 
-                        popUpTo(firstBottomBarDestination.id) {
-                            saveState = true
+                AddItem(
+                    screen = screen,
+                    isSelected = isNavItemSelected,
+                ) {
+                    if (!this@AnimatedVisibility.transition.isRunning) {
+                        navController.navigate(screen.route) {
+                            launchSingleTop = true
+                            val firstBottomBarDestination = navController.graph.findStartDestination()
+
+                            popUpTo(firstBottomBarDestination.id) {
+                                saveState = true
+                            }
+                            restoreState = true
                         }
-                        restoreState = true
                     }
                 }
             }
@@ -140,21 +130,20 @@ fun BottomBar(
 
 @Composable
 fun RowScope.AddItem(
-    destination: BottomBarDestination,
-    currentDestination: NavDestination?,
+    screen: BottomNavScreens,
+    isSelected: Boolean,
     onClickItem: () -> Unit
 ) {
-    val isNavItemSelected = currentDestination?.hierarchy?.any { it.route == destination.direction.route } == true
 
     NavigationBarItem(
-        selected = isNavItemSelected,
+        selected = isSelected,
         onClick = onClickItem,
         icon = {
-            when (destination.label) {
+            when (screen.label) {
                 R.string.add -> {
                     NavIconComponent(
-                        destination = destination,
-                        isNavItemSelected = isNavItemSelected,
+                        screen = screen,
+                        isNavItemSelected = isSelected,
                         modifier = Modifier
                             .size(58.dp)
                             .background(
@@ -167,15 +156,17 @@ fun RowScope.AddItem(
                 }
                 else -> {
                     NavIconComponent(
-                        destination = destination,
-                        isNavItemSelected = isNavItemSelected,
-                        modifier = Modifier.size(
-                            when (destination.label) {
-                                R.string.home -> 29.dp
-                                R.string.profile -> 22.dp
-                                else -> 23.dp
-                            }
-                        ).alpha(0.9f)
+                        screen = screen,
+                        isNavItemSelected = isSelected,
+                        modifier = Modifier
+                            .size(
+                                when (screen.label) {
+                                    R.string.home -> 29.dp
+                                    R.string.profile -> 22.dp
+                                    else -> 23.dp
+                                }
+                            )
+                            .alpha(0.9f)
                     )
                 }
             }
@@ -189,19 +180,19 @@ fun RowScope.AddItem(
 
 @Composable
 fun NavIconComponent(
-    destination: BottomBarDestination,
+    screen: BottomNavScreens,
     isNavItemSelected: Boolean,
     modifier: Modifier = Modifier
 ) {
     Icon(
         painter = painterResource(
             id = if (isNavItemSelected)
-                destination.selectedIcon
+                screen.selectedIcon
             else
-                destination.unselectedIcon
+                screen.unselectedIcon
         ),
-        contentDescription = stringResource(destination.label),
-        tint = when (destination.label) {
+        contentDescription = stringResource(screen.label),
+        tint = when (screen.label) {
             R.string.add -> {
                 if (isNavItemSelected) {
                     Color.Gray

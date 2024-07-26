@@ -3,7 +3,6 @@ package com.task.hub.presentation.ui.screen.details
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -67,7 +66,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import androidx.navigation.NavController
 import com.task.hub.R
 import com.task.hub.data.local.Task
 import com.task.hub.presentation.ui.theme.Black
@@ -87,7 +86,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun DetailsContent(
     paddingValues: PaddingValues,
-    task: Task
+    description: String
 ) {
     Box(
         modifier = Modifier
@@ -100,7 +99,7 @@ fun DetailsContent(
                 pagerContent = { title ->
                     when (title) {
                         "Overview" -> {
-                            OverviewContent(task)
+                            OverviewContent(description)
                         }
                         "Activity" -> {
                             Text(text = "Activity", color = White)
@@ -114,19 +113,19 @@ fun DetailsContent(
 
 @Composable
 fun OverviewContent(
-    task: Task
+    description: String
 ) {
     Column(
         verticalArrangement = Arrangement.Top
     ) {
         ExpandableText(
-            text = task.description,
+            text = description,
             style = TextStyle(
                 fontFamily = priegoFont,
                 color = White,
                 lineHeight = 20.sp,
                 fontWeight = FontWeight.Normal,
-                fontSize = 16.sp,
+                fontSize = 17.sp,
                 textAlign = TextAlign.Start
             ),
             showMoreText = "... read more",
@@ -359,7 +358,7 @@ fun ExpandableText(
 
 @Composable
 fun TopBarComponent(
-    destinationsNavigator: DestinationsNavigator,
+    navController: NavController,
     task: Task
 ) {
     Column(
@@ -379,7 +378,7 @@ fun TopBarComponent(
                 modifier = Modifier.size(28.dp),
                 imageVector = FeatherIcons.ChevronLeft,
             ) {
-                destinationsNavigator.popBackStack()
+                navController.popBackStack()
             }
 
             Row(
@@ -418,23 +417,21 @@ fun TopBarComponent(
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     Image(
                         painter = painterResource(id = R.drawable.profile_photo),
                         contentDescription = "Profile Image",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
-                            .size(36.dp)
+                            .size(41.dp)
                             .clip(CircleShape)
                     )
 
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(3.dp)
-                    ) {
+                    Column {
                         Text(
                             text = "Assigned to",
-                            fontSize = 13.sp,
+                            fontSize = 14.sp,
                             color =  Black,
                             fontFamily = priegoFont,
                             fontWeight = FontWeight.Normal
@@ -451,12 +448,12 @@ fun TopBarComponent(
 
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     Box(
                         modifier = Modifier
-                            .width(33.dp)
-                            .height(33.dp),
+                            .width(34.dp)
+                            .height(34.dp),
                         contentAlignment = Alignment.Center
                     ) {
                         // Creating a Canvas to draw a Circle
@@ -475,16 +472,14 @@ fun TopBarComponent(
                             painter = painterResource(id = R.drawable.calendar_icon),
                             contentDescription = null,
                             tint = Black,
-                            modifier = Modifier.size(16.dp)
+                            modifier = Modifier.size(17.dp)
                         )
                     }
 
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(3.dp)
-                    ) {
+                    Column {
                         Text(
                             text = "Due Date",
-                            fontSize = 13.sp,
+                            fontSize = 14.sp,
                             color =  Black,
                             fontFamily = priegoFont,
                             fontWeight = FontWeight.Normal
@@ -505,7 +500,6 @@ fun TopBarComponent(
 
 data class TabItem(val title: String)
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TabRows(
     pagerContent: @Composable (String) -> Unit

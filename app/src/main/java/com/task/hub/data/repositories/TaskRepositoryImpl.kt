@@ -21,4 +21,7 @@ class TaskRepositoryImpl @Inject constructor(private val taskDao: TaskDao): Task
         return taskDao.getTasksByDate(selectedDate)
     }
 
+    override suspend fun getTaskById(taskId: Int): Task = withContext(Dispatchers.IO) {
+        taskDao.getTaskById(taskId)
+    }
 }
