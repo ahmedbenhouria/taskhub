@@ -1,5 +1,5 @@
 # Overview 🌐
-A template Android app designed with Clean Architecture and MVI, featuring form validation (including MultiSelector and DatePicker), calendar, bottom bar navigation, Compose dialogs, and additional useful libraries.
+A demo Android app built with Compose, Hilt for DI, and Room for data persistence, utilizing modern Android tech stacks and MVI architecture. It features form validation (including MultiSelector and DatePicker), calendar, bottom bar navigation, Compose dialogs, and additional useful libraries.
 
 Check out the [app design](https://dribbble.com/shots/20767519-Task-Management-App-iOS-Android-UI) on Dribble.
 
