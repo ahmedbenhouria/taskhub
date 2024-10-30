@@ -610,7 +610,7 @@ fun DropDownMenuMembersSection(
             ) {
                 items(state.selectedMembers, key = { it.name }) {member ->
                     MemberItem(
-                        modifier = Modifier.animateItemPlacement(),
+                        modifier = Modifier.animateItem(fadeInSpec = null, fadeOutSpec = null),
                         member = member,
                         onClick = {
                             onEvent(TaskFormEvent.MemberRemoved(member))

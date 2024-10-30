@@ -339,7 +339,7 @@ fun TasksListSection(
 @Composable
 fun CardTask(
     task: Task,
-    onClick: (Task) -> Unit,
+    onClick: () -> Unit,
     containerColor: Color = Blue,
     primaryColor: Color = Black,
     secondaryColor: Color = GreyLight,
@@ -352,7 +352,7 @@ fun CardTask(
             .height(210.dp)
             .padding(horizontal = 25.dp)
             .clickable {
-                onClick(task)
+                onClick()
             },
         colors = CardDefaults.cardColors(
             containerColor = containerColor
